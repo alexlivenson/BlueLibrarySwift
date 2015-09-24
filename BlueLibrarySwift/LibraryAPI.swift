@@ -12,6 +12,7 @@ import UIKit
 class LibraryAPI: NSObject {
     private let persistenyManager: PersistenyManager
     private let httpClient: HTTPClient
+    private let notificationCenter: NSNotificationCenter
     private var isOnline: Bool
     
     class var sharedInstance: LibraryAPI {
@@ -25,9 +26,11 @@ class LibraryAPI: NSObject {
     override init() {
         persistenyManager = PersistenyManager()
         httpClient = HTTPClient()
+        notificationCenter = NSNotificationCenter.defaultCenter()
         isOnline = false
         
         super.init()
+        registerObservers()
     }
     
     func getAlbums() -> [Album] {
@@ -48,5 +51,20 @@ class LibraryAPI: NSObject {
         if isOnline {
             httpClient.postRequest("/api/deleteAlbum", body: "\(index)")
         }
+    }
+    
+    func registerObservers() {
+        notificationCenter.addObserver(self,
+            selector: "downloadImage:",
+            name: "BLDownloadImageNotification",
+            object: nil)
+    }
+    
+    func downloadImage(notification: NSNotification) {
+        
+    }
+    
+    deinit {
+        notificationCenter.removeObserver(self)
     }
 }

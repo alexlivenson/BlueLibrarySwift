@@ -12,10 +12,16 @@ class AlbumView: UIView {
 
     private var coverImage: UIImageView!
     private var indicator: UIActivityIndicatorView!
+    private let notificationCenter = NSNotificationCenter.defaultCenter()
     
     init(frame: CGRect, albumCover: String) {
         super.init(frame: frame)
         commonInit()
+        
+        notificationCenter.postNotificationName(
+            "BLDownloadImageNotification",
+            object: self,
+            userInfo: ["imageView": coverImage, "coverUrl": albumCover])
     }
     
     // NOTE: Required because UIView conforms to NSCoding
@@ -42,6 +48,10 @@ class AlbumView: UIView {
         } else {
             backgroundColor = UIColor.blackColor()
         }
+    }
+    
+    func registerObservers() {
+        
     }
 
 }

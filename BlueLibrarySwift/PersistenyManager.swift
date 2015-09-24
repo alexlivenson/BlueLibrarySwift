@@ -57,4 +57,12 @@ class PersistenyManager: NSObject {
     func deleteAlbumAtIndex(index: Int) {
         albums.removeAtIndex(index)
     }
+    
+    func saveImage(image: UIImage, filename: String) {
+
+    }
+    
+    func getImage(filename: String) -> UIImage? {
+        return nil
+    }
 }
