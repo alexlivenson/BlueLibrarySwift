@@ -15,6 +15,13 @@
 		7F6E3C171BB30AAE000423FE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7F6E3C151BB30AAE000423FE /* LaunchScreen.storyboard */; };
 		7F6E3C221BB30AAE000423FE /* BlueLibrarySwiftTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F6E3C211BB30AAE000423FE /* BlueLibrarySwiftTests.swift */; };
 		7F6E3C2D1BB30AAE000423FE /* BlueLibrarySwiftUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F6E3C2C1BB30AAE000423FE /* BlueLibrarySwiftUITests.swift */; };
+		7F6E3C431BB39C81000423FE /* Album.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F6E3C421BB39C81000423FE /* Album.swift */; settings = {ASSET_TAGS = (); }; };
+		7F6E3C451BB39D95000423FE /* AlbumView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F6E3C441BB39D95000423FE /* AlbumView.swift */; settings = {ASSET_TAGS = (); }; };
+		7F6E3C471BB39FFE000423FE /* LibraryAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F6E3C461BB39FFE000423FE /* LibraryAPI.swift */; settings = {ASSET_TAGS = (); }; };
+		7F6E3C491BB3A1B7000423FE /* PersistenyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F6E3C481BB3A1B7000423FE /* PersistenyManager.swift */; settings = {ASSET_TAGS = (); }; };
+		7F6E3C4B1BB3A400000423FE /* HTTPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F6E3C4A1BB3A400000423FE /* HTTPClient.swift */; settings = {ASSET_TAGS = (); }; };
+		7F6E3C4D1BB3AE62000423FE /* HorizontalScroller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F6E3C4C1BB3AE62000423FE /* HorizontalScroller.swift */; settings = {ASSET_TAGS = (); }; };
+		7F6E3C501BB3B8DC000423FE /* Int+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F6E3C4F1BB3B8DC000423FE /* Int+Extension.swift */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +56,13 @@
 		7F6E3C281BB30AAE000423FE /* BlueLibrarySwiftUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BlueLibrarySwiftUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		7F6E3C2C1BB30AAE000423FE /* BlueLibrarySwiftUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlueLibrarySwiftUITests.swift; sourceTree = "<group>"; };
 		7F6E3C2E1BB30AAE000423FE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7F6E3C421BB39C81000423FE /* Album.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Album.swift; sourceTree = "<group>"; };
+		7F6E3C441BB39D95000423FE /* AlbumView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlbumView.swift; sourceTree = "<group>"; };
+		7F6E3C461BB39FFE000423FE /* LibraryAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibraryAPI.swift; sourceTree = "<group>"; };
+		7F6E3C481BB3A1B7000423FE /* PersistenyManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistenyManager.swift; sourceTree = "<group>"; };
+		7F6E3C4A1BB3A400000423FE /* HTTPClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPClient.swift; sourceTree = "<group>"; };
+		7F6E3C4C1BB3AE62000423FE /* HorizontalScroller.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HorizontalScroller.swift; sourceTree = "<group>"; };
+		7F6E3C4F1BB3B8DC000423FE /* Int+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Int+Extension.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +113,11 @@
 		7F6E3C081BB30AAE000423FE /* BlueLibrarySwift */ = {
 			isa = PBXGroup;
 			children = (
+				7F6E3C4E1BB3B877000423FE /* Extensions */,
+				7F6E3C411BB39BF1000423FE /* API */,
+				7F6E3C401BB39BE9000423FE /* View */,
+				7F6E3C3F1BB39BE2000423FE /* Model */,
+				7F6E3C3E1BB39BDA000423FE /* Controller */,
 				7F6E3C091BB30AAE000423FE /* AppDelegate.swift */,
 				7F6E3C0B1BB30AAE000423FE /* ViewController.swift */,
 				7F6E3C0D1BB30AAE000423FE /* Main.storyboard */,
@@ -126,6 +145,48 @@
 				7F6E3C2E1BB30AAE000423FE /* Info.plist */,
 			);
 			path = BlueLibrarySwiftUITests;
+			sourceTree = "<group>";
+		};
+		7F6E3C3E1BB39BDA000423FE /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		7F6E3C3F1BB39BE2000423FE /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				7F6E3C421BB39C81000423FE /* Album.swift */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		7F6E3C401BB39BE9000423FE /* View */ = {
+			isa = PBXGroup;
+			children = (
+				7F6E3C441BB39D95000423FE /* AlbumView.swift */,
+				7F6E3C4C1BB3AE62000423FE /* HorizontalScroller.swift */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		7F6E3C411BB39BF1000423FE /* API */ = {
+			isa = PBXGroup;
+			children = (
+				7F6E3C461BB39FFE000423FE /* LibraryAPI.swift */,
+				7F6E3C481BB3A1B7000423FE /* PersistenyManager.swift */,
+				7F6E3C4A1BB3A400000423FE /* HTTPClient.swift */,
+			);
+			name = API;
+			sourceTree = "<group>";
+		};
+		7F6E3C4E1BB3B877000423FE /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				7F6E3C4F1BB3B8DC000423FE /* Int+Extension.swift */,
+			);
+			name = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -260,7 +321,14 @@
 			files = (
 				7F6E3C0C1BB30AAE000423FE /* ViewController.swift in Sources */,
 				7F6E3C121BB30AAE000423FE /* BlueLibrarySwift.xcdatamodeld in Sources */,
+				7F6E3C4B1BB3A400000423FE /* HTTPClient.swift in Sources */,
+				7F6E3C471BB39FFE000423FE /* LibraryAPI.swift in Sources */,
+				7F6E3C4D1BB3AE62000423FE /* HorizontalScroller.swift in Sources */,
+				7F6E3C501BB3B8DC000423FE /* Int+Extension.swift in Sources */,
+				7F6E3C491BB3A1B7000423FE /* PersistenyManager.swift in Sources */,
 				7F6E3C0A1BB30AAE000423FE /* AppDelegate.swift in Sources */,
+				7F6E3C451BB39D95000423FE /* AlbumView.swift in Sources */,
+				7F6E3C431BB39C81000423FE /* Album.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -485,6 +553,7 @@
 				7F6E3C331BB30AAE000423FE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		7F6E3C341BB30AAE000423FE /* Build configuration list for PBXNativeTarget "BlueLibrarySwiftTests" */ = {
 			isa = XCConfigurationList;
@@ -493,6 +562,7 @@
 				7F6E3C361BB30AAE000423FE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		7F6E3C371BB30AAE000423FE /* Build configuration list for PBXNativeTarget "BlueLibrarySwiftUITests" */ = {
 			isa = XCConfigurationList;
@@ -501,6 +571,7 @@
 				7F6E3C391BB30AAE000423FE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 

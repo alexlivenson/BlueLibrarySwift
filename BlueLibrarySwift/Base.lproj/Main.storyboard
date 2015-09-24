@@ -20,9 +20,11 @@
                                 <rect key="frame" x="0.0" y="556" width="600" height="44"/>
                                 <items>
                                     <barButtonItem title="Item" id="5AQ-x7-QEj"/>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="yhR-AJ-sej"/>
+                                    <barButtonItem systemItem="trash" id="0ct-YA-Hjy"/>
                                 </items>
                             </toolbar>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="z0v-Cb-1nj">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="z0v-Cb-1nj" customClass="HorizontalScroller" customModule="BlueLibrarySwift" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="64" width="600" height="120"/>
                                 <color key="backgroundColor" red="0.74117647058823533" green="0.74117647058823533" blue="0.7686274509803922" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
@@ -76,6 +78,11 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="P07-Pw-4Pn"/>
+                    <connections>
+                        <outlet property="dataTable" destination="bhv-vJ-JXr" id="XiG-US-0sm"/>
+                        <outlet property="scroller" destination="z0v-Cb-1nj" id="7G9-6D-rHz"/>
+                        <outlet property="toolbar" destination="bLY-M6-fxF" id="FA1-hh-d6t"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
