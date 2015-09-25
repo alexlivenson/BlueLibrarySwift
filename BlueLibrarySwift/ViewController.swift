@@ -14,6 +14,9 @@ class ViewController: UIViewController {
     @IBOutlet weak var toolbar: UIToolbar!
     @IBOutlet weak var scroller: HorizontalScroller!
     
+    private let userDefaults = NSUserDefaults.standardUserDefaults()
+    private let notificationCenter = NSNotificationCenter.defaultCenter()
+    
     private var allAlbums = [Album]()
     private var currentAlbumData: (titles: [String], values: [String])?
     private var currentAlbumIndex = 0
@@ -36,10 +39,17 @@ class ViewController: UIViewController {
         dataTable.backgroundView = nil
         view.addSubview(dataTable)
         
+        loadPreviousState()
+        
         scroller.delegate = self
         reloadScroller()
         
         self.showDataForAlbum(currentAlbumIndex)
+        
+        notificationCenter.addObserver(self,
+            selector: "saveCurrentState",
+            name: UIApplicationDidEnterBackgroundNotification,
+            object: nil)
     }
 
     override func didReceiveMemoryWarning() {
@@ -68,6 +78,20 @@ class ViewController: UIViewController {
         
         scroller.reload()
         showDataForAlbum(currentAlbumIndex)
+    }
+    
+    // MARK: Memento Pattern
+    func saveCurrentState() {
+        userDefaults.setInteger(currentAlbumIndex, forKey: "currentAlbumIndex")
+    }
+    
+    func loadPreviousState() {
+        currentAlbumIndex = userDefaults.integerForKey("currentAlbumIndex")
+        showDataForAlbum(currentAlbumIndex)
+    }
+    
+    deinit {
+        notificationCenter.removeObserver(self)
     }
 }
 
@@ -120,6 +144,10 @@ extension ViewController: HorizontalScrollerDelegate {
         }
         
         return albumView
+    }
+    
+    func initialViewIndex(scroller: HorizontalScroller) -> Int {
+        return currentAlbumIndex
     }
 }
 

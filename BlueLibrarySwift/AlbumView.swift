@@ -14,6 +14,8 @@ class AlbumView: UIView {
     private var indicator: UIActivityIndicatorView!
     private let notificationCenter = NSNotificationCenter.defaultCenter()
     
+    private let imageKeyPath = "image"
+    
     init(frame: CGRect, albumCover: String) {
         super.init(frame: frame)
         commonInit()
@@ -22,6 +24,7 @@ class AlbumView: UIView {
             "BLDownloadImageNotification",
             object: self,
             userInfo: ["imageView": coverImage, "coverUrl": albumCover])
+        
     }
     
     // NOTE: Required because UIView conforms to NSCoding
@@ -40,6 +43,12 @@ class AlbumView: UIView {
         indicator.activityIndicatorViewStyle = .WhiteLarge
         indicator.startAnimating()
         addSubview(indicator)
+        
+        // KVO -> Should come before notification center
+        coverImage.addObserver(self,
+            forKeyPath: imageKeyPath,
+            options: .Prior,
+            context: nil)
     }
     
     func highlightAlbum(didHighlightView: Bool) {
@@ -50,8 +59,14 @@ class AlbumView: UIView {
         }
     }
     
-    func registerObservers() {
-        
+    override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
+        if keyPath == imageKeyPath {
+            indicator.stopAnimating()
+        }
+    }
+    
+    deinit {
+        coverImage.removeObserver(self, forKeyPath: imageKeyPath)
     }
 
 }
