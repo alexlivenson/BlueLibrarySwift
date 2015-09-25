@@ -63,6 +63,7 @@
 		7F6E3C4A1BB3A400000423FE /* HTTPClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPClient.swift; sourceTree = "<group>"; };
 		7F6E3C4C1BB3AE62000423FE /* HorizontalScroller.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HorizontalScroller.swift; sourceTree = "<group>"; };
 		7F6E3C4F1BB3B8DC000423FE /* Int+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Int+Extension.swift"; sourceTree = "<group>"; };
+		7F6E3C511BB5C977000423FE /* BlueLibraryPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = BlueLibraryPlayground.playground; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -119,12 +120,12 @@
 				7F6E3C3F1BB39BE2000423FE /* Model */,
 				7F6E3C3E1BB39BDA000423FE /* Controller */,
 				7F6E3C091BB30AAE000423FE /* AppDelegate.swift */,
-				7F6E3C0B1BB30AAE000423FE /* ViewController.swift */,
 				7F6E3C0D1BB30AAE000423FE /* Main.storyboard */,
 				7F6E3C131BB30AAE000423FE /* Assets.xcassets */,
 				7F6E3C151BB30AAE000423FE /* LaunchScreen.storyboard */,
 				7F6E3C181BB30AAE000423FE /* Info.plist */,
 				7F6E3C101BB30AAE000423FE /* BlueLibrarySwift.xcdatamodeld */,
+				7F6E3C511BB5C977000423FE /* BlueLibraryPlayground.playground */,
 			);
 			path = BlueLibrarySwift;
 			sourceTree = "<group>";
@@ -150,6 +151,7 @@
 		7F6E3C3E1BB39BDA000423FE /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				7F6E3C0B1BB30AAE000423FE /* ViewController.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
