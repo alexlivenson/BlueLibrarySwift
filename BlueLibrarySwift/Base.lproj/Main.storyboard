@@ -19,9 +19,17 @@
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bLY-M6-fxF">
                                 <rect key="frame" x="0.0" y="556" width="600" height="44"/>
                                 <items>
-                                    <barButtonItem title="Item" id="5AQ-x7-QEj"/>
+                                    <barButtonItem systemItem="undo" id="5AQ-x7-QEj">
+                                        <connections>
+                                            <action selector="undoAction:" destination="BYZ-38-t0r" id="GUN-c4-bRj"/>
+                                        </connections>
+                                    </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="yhR-AJ-sej"/>
-                                    <barButtonItem systemItem="trash" id="0ct-YA-Hjy"/>
+                                    <barButtonItem systemItem="trash" id="0ct-YA-Hjy">
+                                        <connections>
+                                            <action selector="deleteAlbum:" destination="BYZ-38-t0r" id="y9N-Tn-kaG"/>
+                                        </connections>
+                                    </barButtonItem>
                                 </items>
                             </toolbar>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="z0v-Cb-1nj" customClass="HorizontalScroller" customModule="BlueLibrarySwift" customModuleProvider="target">
@@ -80,8 +88,10 @@
                     <navigationItem key="navigationItem" id="P07-Pw-4Pn"/>
                     <connections>
                         <outlet property="dataTable" destination="bhv-vJ-JXr" id="XiG-US-0sm"/>
+                        <outlet property="deleteButton" destination="0ct-YA-Hjy" id="AJ8-4e-2xA"/>
                         <outlet property="scroller" destination="z0v-Cb-1nj" id="7G9-6D-rHz"/>
                         <outlet property="toolbar" destination="bLY-M6-fxF" id="FA1-hh-d6t"/>
+                        <outlet property="undoButton" destination="5AQ-x7-QEj" id="m0n-gq-Wzt"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

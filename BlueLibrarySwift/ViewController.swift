@@ -13,14 +13,21 @@ class ViewController: UIViewController {
     @IBOutlet weak var dataTable: UITableView!
     @IBOutlet weak var toolbar: UIToolbar!
     @IBOutlet weak var scroller: HorizontalScroller!
+    @IBOutlet weak var undoButton: UIBarButtonItem!
+    @IBOutlet weak var deleteButton: UIBarButtonItem!
     
-    private let userDefaults = NSUserDefaults.standardUserDefaults()
-    private let notificationCenter = NSNotificationCenter.defaultCenter()
+    
+    
+    let userDefaults = NSUserDefaults.standardUserDefaults()
+    let notificationCenter = NSNotificationCenter.defaultCenter()
+    let libraryAPI = LibraryAPI.sharedInstance
     
     private var allAlbums = [Album]()
     private var currentAlbumData: (titles: [String], values: [String])?
     private var currentAlbumIndex = 0
-    private var libraryAPI = LibraryAPI.sharedInstance
+    
+    // We will use this array as a stick to push / pop operation for the undo option
+    private var undoStack: [(Album, Int)] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,16 +52,27 @@ class ViewController: UIViewController {
         reloadScroller()
         
         self.showDataForAlbum(currentAlbumIndex)
+        styleToolbarButtons()
         
         notificationCenter.addObserver(self,
             selector: "saveCurrentState",
             name: UIApplicationDidEnterBackgroundNotification,
             object: nil)
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    private func styleToolbarButtons() {
+        if allAlbums.count == 0 {
+            deleteButton.enabled = false
+        }
+        
+        if undoStack.count == 0 {
+            undoButton.enabled = false
+        }
     }
 
     func showDataForAlbum(albumIndex: Int) {
@@ -88,6 +106,51 @@ class ViewController: UIViewController {
     func loadPreviousState() {
         currentAlbumIndex = userDefaults.integerForKey("currentAlbumIndex")
         showDataForAlbum(currentAlbumIndex)
+    }
+    
+    func addAlbumAtIndex(album: Album, index: Int) {
+        libraryAPI.addAlbum(album, index: index)
+        currentAlbumIndex = index
+        reloadScroller()
+    }
+    
+    @IBAction func undoAction(sender: UIBarButtonItem) {
+        // 1
+        if undoStack.count > 0 {
+            let (deletedAlbum, index) = undoStack.popLast()!
+            addAlbumAtIndex(deletedAlbum, index: index)
+        }
+        
+        // 2
+        if undoStack.count == 0 {
+            undoButton.enabled = false
+        }
+        
+        // 3
+        deleteButton.enabled = true
+    }
+    
+    
+    @IBAction func deleteAlbum(sender: UIBarButtonItem) {
+        // 1
+        let deleteAlbum = allAlbums[currentAlbumIndex]
+        
+        // 2
+        let undoAction = (deleteAlbum, currentAlbumIndex)
+        undoStack.append(undoAction)
+        
+        // 3
+        libraryAPI.deleteAlbum(currentAlbumIndex)
+        reloadScroller()
+        
+        // 4
+        undoButton?.enabled = true
+        
+        // 5
+        if allAlbums.count == 0 {
+            deleteButton.enabled = false
+        }
+
     }
     
     deinit {
