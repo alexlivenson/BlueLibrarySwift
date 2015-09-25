@@ -160,9 +160,9 @@ extension ViewController: UITableViewDataSource {
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if let rows = currentAlbumData?.titles.count {
             return rows
-        } else {
-            return 2
         }
+        
+        return 0
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
