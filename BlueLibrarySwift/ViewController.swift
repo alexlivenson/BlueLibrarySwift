@@ -16,8 +16,6 @@ class ViewController: UIViewController {
     @IBOutlet weak var undoButton: UIBarButtonItem!
     @IBOutlet weak var deleteButton: UIBarButtonItem!
     
-    
-    
     let userDefaults = NSUserDefaults.standardUserDefaults()
     let notificationCenter = NSNotificationCenter.defaultCenter()
     let libraryAPI = LibraryAPI.sharedInstance
@@ -51,7 +49,7 @@ class ViewController: UIViewController {
         scroller.delegate = self
         reloadScroller()
         
-        self.showDataForAlbum(currentAlbumIndex)
+        showDataForAlbum(currentAlbumIndex)
         styleToolbarButtons()
         
         notificationCenter.addObserver(self,
@@ -160,7 +158,15 @@ class ViewController: UIViewController {
 
 extension ViewController: UITableViewDataSource {
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return allAlbums.count - 1
+        if let rows = currentAlbumData?.titles.count {
+            return rows
+        } else {
+            return 2
+        }
+    }
+    
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return 1
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
