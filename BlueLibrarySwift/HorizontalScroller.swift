@@ -58,7 +58,7 @@ class HorizontalScroller: UIView {
                 
                 if CGRectContainsPoint(view.frame, location) {
                     delegate.horizontalScrollerClickedViewAtIndex(self, index: index)
-                    let pointOffset = CGPoint(x: view.frame.origin.x - self.frame.size.width / 2 + view.frame.size.width / 2, y: 0)
+                    let pointOffset = CGPoint(x: view.frame.origin.x - self.frame.width / 2 + view.frame.width / 2, y: 0)
                     // center the tapped view in scroller
                     scroller.setContentOffset(pointOffset, animated: true)
                     break
@@ -76,10 +76,7 @@ class HorizontalScroller: UIView {
         if let delegate = delegate {
             let views = scroller.subviews
             
-            // swift 2.0 views.forEach?
-            for view in views {
-                view.removeFromSuperview()
-            }
+            views.forEach { $0.removeFromSuperview() }
             
             // xValue is the starting point of the views inside the scroller
             var xValue = VIEWS_OFFSET
