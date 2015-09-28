@@ -22,6 +22,8 @@ class ApplicationAssembly: TyphoonAssembly {
                 initializer.injectParameterWith(self.coreComponents.persistencyManager())
                 initializer.injectParameterWith(NSNotificationCenter.defaultCenter())
             }
+            
+            definition.scope = .Singleton
         }
     }
     
