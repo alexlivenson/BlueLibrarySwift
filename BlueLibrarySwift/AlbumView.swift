@@ -12,14 +12,15 @@ class AlbumView: UIView {
 
     private var coverImage: UIImageView!
     private var indicator: UIActivityIndicatorView!
-    private let notificationCenter = NSNotificationCenter.defaultCenter()
+    private var notificationCenter: NSNotificationCenter!
     
     private let imageKeyPath = "image"
     
-    init(frame: CGRect, albumCover: String) {
+    init(frame: CGRect, albumCover: String, notificationCenter: NSNotificationCenter) {
         super.init(frame: frame)
         commonInit()
         
+        self.notificationCenter = notificationCenter
         notificationCenter.postNotificationName(
             "BLDownloadImageNotification",
             object: self,
