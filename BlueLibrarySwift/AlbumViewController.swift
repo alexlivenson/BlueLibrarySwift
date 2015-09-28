@@ -205,7 +205,8 @@ extension AlbumViewController: HorizontalScrollerDelegate {
     
     func horizontalScrollerViewAtIndex(scroller: HorizontalScroller, index: Int) -> UIView {
         let album = allAlbums[index]
-        let albumView = AlbumView(frame: CGRect(x: 0, y: 0, width: 100, height: 100), albumCover: album.coverUrl)
+        let frame = CGRect(x: 0, y: 0, width: 100, height: 100)
+        let albumView = AlbumView(frame: frame, albumCover: album.coverUrl)
         
         if currentAlbumIndex == index {
             albumView.highlightAlbum(true)

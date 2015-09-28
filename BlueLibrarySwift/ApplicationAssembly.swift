@@ -19,7 +19,7 @@ class ApplicationAssembly: TyphoonAssembly {
         return TyphoonDefinition.withClass(LibraryAPI.self) { (definition: TyphoonDefinition!) -> Void in
             definition.useInitializer("initWithPersistencyManager:httpClient:notificationCenter:") { (initializer: TyphoonMethod!) -> Void in
                 initializer.injectParameterWith(self.coreComponents.persistencyManager())
-                initializer.injectParameterWith(self.coreComponents.persistencyManager())
+                initializer.injectParameterWith(self.coreComponents.httpClient())
                 initializer.injectParameterWith(NSNotificationCenter.defaultCenter())
             }
             
@@ -37,5 +37,4 @@ class ApplicationAssembly: TyphoonAssembly {
             definition.injectProperty("notificationCenter", with: NSNotificationCenter.defaultCenter())
         }
     }
-    
 }
