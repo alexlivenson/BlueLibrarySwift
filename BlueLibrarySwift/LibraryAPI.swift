@@ -10,35 +10,27 @@ import UIKit
 
 // Library API will be exposed to other code but will hide HTTPClient and PersistencyManager (Facade Pattern)
 class LibraryAPI: NSObject {
-    private let persistenyManager: PersistenyManager
+    private let persistencyManager: PersistencyManager
     private let httpClient: HTTPClient
     private let notificationCenter: NSNotificationCenter
     private var isOnline: Bool
-    
-    class var sharedInstance: LibraryAPI {
-        struct Singleton {
-            static let instance = LibraryAPI()
-        }
         
-        return Singleton.instance
-    }
-    
-    override init() {
-        persistenyManager = PersistenyManager()
-        httpClient = HTTPClient()
-        notificationCenter = NSNotificationCenter.defaultCenter()
-        isOnline = false
+    init(persistencyManager: PersistencyManager, httpClient: HTTPClient, notificationCenter: NSNotificationCenter) {
+        self.persistencyManager = persistencyManager
+        self.httpClient = httpClient
+        self.notificationCenter = notificationCenter
+        self.isOnline = false
         
         super.init()
         registerObservers()
     }
     
     func getAlbums() -> [Album] {
-        return persistenyManager.getAlbums()
+        return persistencyManager.getAlbums()
     }
     
     func addAlbum(album: Album, index: Int) {
-        persistenyManager.addAlbum(album, index: index)
+        persistencyManager.addAlbum(album, index: index)
             
         if isOnline {
             httpClient.postRequest("/api/addAlbum", body: album.description)
@@ -46,11 +38,11 @@ class LibraryAPI: NSObject {
     }
     
     func saveAlbums() {
-        persistenyManager.saveAlbums()        
+        persistencyManager.saveAlbums()
     }
     
     func deleteAlbum(index: Int) {
-        persistenyManager.deleteAlbumAtIndex(index)
+        persistencyManager.deleteAlbumAtIndex(index)
         
         if isOnline {
             httpClient.postRequest("/api/deleteAlbum", body: "\(index)")
@@ -81,7 +73,7 @@ class LibraryAPI: NSObject {
             return
         }
         
-        imageView.image = persistenyManager.getImage(lastPathComponent)
+        imageView.image = persistencyManager.getImage(lastPathComponent)
         
         if imageView.image == nil {
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { () -> Void in
@@ -91,7 +83,7 @@ class LibraryAPI: NSObject {
                     imageView.image = downloadedImage
                     
                     if let _downloadedImage = downloadedImage {
-                        self.persistenyManager.saveImage(_downloadedImage, filename: lastPathComponent)
+                        self.persistencyManager.saveImage(_downloadedImage, filename: lastPathComponent)
                     }
                 }
             }
