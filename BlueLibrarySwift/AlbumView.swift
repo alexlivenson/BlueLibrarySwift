@@ -66,6 +66,7 @@ class AlbumView: UIView {
         }
     }
     
+    
     deinit {
         coverImage.removeObserver(self, forKeyPath: imageKeyPath)
     }

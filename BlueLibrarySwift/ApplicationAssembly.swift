@@ -11,7 +11,7 @@ import Typhoon
 
 class ApplicationAssembly: TyphoonAssembly {
     
-    //    MARK: - Bootstrapping
+    // MARK: - Bootstrapping
     
     var coreComponents: CoreComponents!
     
