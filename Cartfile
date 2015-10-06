@@ -1,1 +1,2 @@
 github "appsquickly/Typhoon"
+github "ReactiveCocoa/ReactiveCocoa" "swift2"

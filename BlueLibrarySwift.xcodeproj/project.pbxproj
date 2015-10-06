@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7F2D31D01BC439CF003FF53E /* ReactiveCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F2D31CF1BC439CF003FF53E /* ReactiveCocoa.framework */; settings = {ASSET_TAGS = (); }; };
+		7F2D31D31BC43D19003FF53E /* AlbumViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F2D31D21BC43D19003FF53E /* AlbumViewModel.swift */; settings = {ASSET_TAGS = (); }; };
+		7F2D31D51BC44209003FF53E /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F2D31D41BC44209003FF53E /* Result.framework */; settings = {ASSET_TAGS = (); }; };
 		7F6E3C0A1BB30AAE000423FE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F6E3C091BB30AAE000423FE /* AppDelegate.swift */; };
 		7F6E3C0C1BB30AAE000423FE /* AlbumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F6E3C0B1BB30AAE000423FE /* AlbumViewController.swift */; };
 		7F6E3C0F1BB30AAE000423FE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7F6E3C0D1BB30AAE000423FE /* Main.storyboard */; };
@@ -46,6 +49,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		7F2D31CF1BC439CF003FF53E /* ReactiveCocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReactiveCocoa.framework; path = Carthage/Build/iOS/ReactiveCocoa.framework; sourceTree = "<group>"; };
+		7F2D31D21BC43D19003FF53E /* AlbumViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlbumViewModel.swift; sourceTree = "<group>"; };
+		7F2D31D41BC44209003FF53E /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Result.framework; path = Carthage/Build/iOS/Result.framework; sourceTree = "<group>"; };
 		7F6E3C061BB30AAE000423FE /* BlueLibrarySwift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BlueLibrarySwift.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7F6E3C091BB30AAE000423FE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7F6E3C0B1BB30AAE000423FE /* AlbumViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumViewController.swift; sourceTree = "<group>"; };
@@ -79,7 +85,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7F2D31D51BC44209003FF53E /* Result.framework in Frameworks */,
 				7F975A201BB8E9D300A6EEBB /* Typhoon.framework in Frameworks */,
+				7F2D31D01BC439CF003FF53E /* ReactiveCocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -100,9 +108,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7F2D31D11BC43CFC003FF53E /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				7F2D31D21BC43D19003FF53E /* AlbumViewModel.swift */,
+			);
+			name = ViewModel;
+			sourceTree = "<group>";
+		};
 		7F6E3BFD1BB30AAE000423FE = {
 			isa = PBXGroup;
 			children = (
+				7F2D31D41BC44209003FF53E /* Result.framework */,
+				7F2D31CF1BC439CF003FF53E /* ReactiveCocoa.framework */,
 				7F975A1F1BB8E9D300A6EEBB /* Typhoon.framework */,
 				7F6E3C081BB30AAE000423FE /* BlueLibrarySwift */,
 				7F6E3C201BB30AAE000423FE /* BlueLibrarySwiftTests */,
@@ -124,6 +142,7 @@
 		7F6E3C081BB30AAE000423FE /* BlueLibrarySwift */ = {
 			isa = PBXGroup;
 			children = (
+				7F2D31D11BC43CFC003FF53E /* ViewModel */,
 				7FDE03701BBB775100514288 /* Util */,
 				7F975A1B1BB8E96800A6EEBB /* Assembly */,
 				7F6E3C4E1BB3B877000423FE /* Extensions */,
@@ -354,6 +373,8 @@
 			);
 			inputPaths = (
 				"$(SRCROOT)/Carthage/Build/iOS/Typhoon.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/ReactiveCocoa.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/Result.framework",
 			);
 			outputPaths = (
 			);
@@ -378,6 +399,7 @@
 				7F6E3C4D1BB3AE62000423FE /* HorizontalScroller.swift in Sources */,
 				7F6E3C501BB3B8DC000423FE /* Int+Extension.swift in Sources */,
 				7F6E3C491BB3A1B7000423FE /* PersistencyManager.swift in Sources */,
+				7F2D31D31BC43D19003FF53E /* AlbumViewModel.swift in Sources */,
 				7F6E3C0A1BB30AAE000423FE /* AppDelegate.swift in Sources */,
 				7F6E3C451BB39D95000423FE /* AlbumView.swift in Sources */,
 				7F6E3C431BB39C81000423FE /* Album.swift in Sources */,

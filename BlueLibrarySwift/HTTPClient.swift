@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import ReactiveCocoa
 
 class HTTPClient: NSObject {
 
@@ -18,6 +19,7 @@ class HTTPClient: NSObject {
         return NSData()
     }
     
+    // do reactive cocoa here?
     func downloadImage(url: String) -> UIImage? {
         guard let aUrl = NSURL(string: url) else {
             return nil
@@ -30,6 +32,10 @@ class HTTPClient: NSObject {
         guard let image = UIImage(data: data) else {
             return nil
         }
+        
+//        return NSData(contentsOfURL: aUrl).flatMap() {
+//            UIImage(data: $0)!
+//        }
         
         return image
     }
