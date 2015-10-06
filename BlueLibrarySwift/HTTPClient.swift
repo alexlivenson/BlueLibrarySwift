@@ -18,26 +18,16 @@ class HTTPClient: NSObject {
     func postRequest(url: String, body: String) -> AnyObject {
         return NSData()
     }
-    
+     
     // do reactive cocoa here?
     func downloadImage(url: String) -> UIImage? {
-        guard let aUrl = NSURL(string: url) else {
+        guard let aUrl = NSURL(string: url),
+              let data = NSData(contentsOfURL: aUrl),
+              let image = UIImage(data: data) else {
+                
             return nil
         }
-        
-        guard let data = NSData(contentsOfURL: aUrl) else {
-            return nil
-        }
-        
-        guard let image = UIImage(data: data) else {
-            return nil
-        }
-        
-//        return NSData(contentsOfURL: aUrl).flatMap() {
-//            UIImage(data: $0)!
-//        }
         
         return image
-    }
-    
+    }    
 }

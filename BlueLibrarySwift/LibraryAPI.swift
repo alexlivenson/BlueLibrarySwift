@@ -73,9 +73,9 @@ class LibraryAPI: NSObject {
             return
         }
         
-        imageView.image = persistencyManager.getImage(lastPathComponent)
+//        imageView.image = persistencyManager.getImage(lastPathComponent)
         
-        if imageView.image == nil {
+//        if imageView.image == nil {
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { () -> Void in
                 let downloadedImage = self.httpClient.downloadImage(coverUrl)
                 
@@ -86,7 +86,7 @@ class LibraryAPI: NSObject {
                         self.persistencyManager.saveImage(_downloadedImage, filename: lastPathComponent)
                     }
                 }
-            }
+//            }
         }
     }
     
