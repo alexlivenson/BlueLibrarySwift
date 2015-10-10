@@ -29,5 +29,5 @@ class HTTPClient: NSObject {
         }
         
         return image
-    }    
+    }
 }

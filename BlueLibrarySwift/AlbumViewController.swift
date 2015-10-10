@@ -19,7 +19,7 @@ class AlbumViewController: UIViewController {
     // To be injection by DI Framework
     var userDefaults: NSUserDefaults!
     var notificationCenter: NSNotificationCenter!
-    var libraryAPI: LibraryAPI!
+    var libraryAPI: LibraryAPIProtocol!
     
     private var allAlbums = [Album]()
     private var currentAlbumData: (titles: [String], values: [String])?
