@@ -13,13 +13,16 @@ class AlbumViewController: UIViewController {
     @IBOutlet weak var dataTable: UITableView!
     @IBOutlet weak var toolbar: UIToolbar!
     @IBOutlet weak var scroller: HorizontalScroller!
+    
+    // NOTE: Reactive Cocoa does not yet have good support for UIBarButtonItems
     @IBOutlet weak var undoButton: UIBarButtonItem!
     @IBOutlet weak var deleteButton: UIBarButtonItem!
     
-    // To be injection by DI Framework
+    // To be injection by DI Frameworkx
     var userDefaults: NSUserDefaults!
     var notificationCenter: NSNotificationCenter!
     var libraryAPI: LibraryAPIProtocol!
+    var albumsViewModel: AlbumViewModel!
     
     private var allAlbums = [Album]()
     private var currentAlbumData: (titles: [String], values: [String])?
@@ -57,6 +60,7 @@ class AlbumViewController: UIViewController {
             selector: "saveCurrentState",
             name: UIApplicationDidEnterBackgroundNotification,
             object: nil)
+                
     }
     
     override func didReceiveMemoryWarning() {

@@ -8,6 +8,7 @@
 
 import UIKit
 import ReactiveCocoa
+import Alamofire
 
 class HTTPClient: NSObject {
 
@@ -18,8 +19,7 @@ class HTTPClient: NSObject {
     func postRequest(url: String, body: String) -> AnyObject {
         return NSData()
     }
-     
-    // do reactive cocoa here?
+    
     func downloadImage(url: String) -> UIImage? {
         guard let aUrl = NSURL(string: url),
               let data = NSData(contentsOfURL: aUrl),
@@ -28,6 +28,25 @@ class HTTPClient: NSObject {
             return nil
         }
         
+        
         return image
+    }    
+    
+    func signalForLoadingImage(url: String) -> RACSignal {
+        // execute on non main thread
+        let schedular = RACScheduler(priority: RACSchedulerPriorityBackground)
+        return RACSignal.createSignal { (subscriber: RACSubscriber!) -> RACDisposable! in
+            
+            guard let aUrl = NSURL(string: url),
+                  let data = NSData(contentsOfURL: aUrl),
+                  let image = UIImage(data: data) else {
+                return nil
+            }
+            
+            subscriber.sendNext(image)
+            subscriber.sendCompleted()
+            
+            return nil
+        }.subscribeOn(schedular)
     }
 }

@@ -29,7 +29,9 @@
 		7F975A201BB8E9D300A6EEBB /* Typhoon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F975A1F1BB8E9D300A6EEBB /* Typhoon.framework */; settings = {ASSET_TAGS = (); }; };
 		7F975A221BB8EE7F00A6EEBB /* CoreComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F975A211BB8EE7F00A6EEBB /* CoreComponents.swift */; settings = {ASSET_TAGS = (); }; };
 		7FDE03721BBB778D00514288 /* Dynamic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FDE03711BBB778C00514288 /* Dynamic.swift */; settings = {ASSET_TAGS = (); }; };
-		7FF588B31BC9B9F000077E36 /* LibraryAPIProtocl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FF588B21BC9B9F000077E36 /* LibraryAPIProtocl.swift */; settings = {ASSET_TAGS = (); }; };
+		7FF588B31BC9B9F000077E36 /* LibraryAPIProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FF588B21BC9B9F000077E36 /* LibraryAPIProtocol.swift */; settings = {ASSET_TAGS = (); }; };
+		7FF588B51BCA03BB00077E36 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FF588B41BCA03BB00077E36 /* Alamofire.framework */; settings = {ASSET_TAGS = (); }; };
+		7FF588B71BCB39DF00077E36 /* AlbumsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FF588B61BCB39DF00077E36 /* AlbumsViewModel.swift */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -79,7 +81,9 @@
 		7F975A1F1BB8E9D300A6EEBB /* Typhoon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Typhoon.framework; path = Carthage/Build/iOS/Typhoon.framework; sourceTree = "<group>"; };
 		7F975A211BB8EE7F00A6EEBB /* CoreComponents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreComponents.swift; sourceTree = "<group>"; };
 		7FDE03711BBB778C00514288 /* Dynamic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Dynamic.swift; sourceTree = "<group>"; };
-		7FF588B21BC9B9F000077E36 /* LibraryAPIProtocl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibraryAPIProtocl.swift; sourceTree = "<group>"; };
+		7FF588B21BC9B9F000077E36 /* LibraryAPIProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibraryAPIProtocol.swift; sourceTree = "<group>"; };
+		7FF588B41BCA03BB00077E36 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = Carthage/Build/iOS/Alamofire.framework; sourceTree = "<group>"; };
+		7FF588B61BCB39DF00077E36 /* AlbumsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlbumsViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,6 +94,7 @@
 				7F2D31D51BC44209003FF53E /* Result.framework in Frameworks */,
 				7F975A201BB8E9D300A6EEBB /* Typhoon.framework in Frameworks */,
 				7F2D31D01BC439CF003FF53E /* ReactiveCocoa.framework in Frameworks */,
+				7FF588B51BCA03BB00077E36 /* Alamofire.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -114,6 +119,7 @@
 			isa = PBXGroup;
 			children = (
 				7F2D31D21BC43D19003FF53E /* AlbumViewModel.swift */,
+				7FF588B61BCB39DF00077E36 /* AlbumsViewModel.swift */,
 			);
 			name = ViewModel;
 			sourceTree = "<group>";
@@ -121,6 +127,7 @@
 		7F6E3BFD1BB30AAE000423FE = {
 			isa = PBXGroup;
 			children = (
+				7FF588B41BCA03BB00077E36 /* Alamofire.framework */,
 				7F2D31D41BC44209003FF53E /* Result.framework */,
 				7F2D31CF1BC439CF003FF53E /* ReactiveCocoa.framework */,
 				7F975A1F1BB8E9D300A6EEBB /* Typhoon.framework */,
@@ -212,7 +219,7 @@
 				7F6E3C461BB39FFE000423FE /* LibraryAPI.swift */,
 				7F6E3C481BB3A1B7000423FE /* PersistencyManager.swift */,
 				7F6E3C4A1BB3A400000423FE /* HTTPClient.swift */,
-				7FF588B21BC9B9F000077E36 /* LibraryAPIProtocl.swift */,
+				7FF588B21BC9B9F000077E36 /* LibraryAPIProtocol.swift */,
 			);
 			name = API;
 			sourceTree = "<group>";
@@ -378,6 +385,7 @@
 				"$(SRCROOT)/Carthage/Build/iOS/Typhoon.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/ReactiveCocoa.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/Result.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/Alamofire.framework",
 			);
 			outputPaths = (
 			);
@@ -394,9 +402,10 @@
 			files = (
 				7F6E3C0C1BB30AAE000423FE /* AlbumViewController.swift in Sources */,
 				7F6E3C121BB30AAE000423FE /* BlueLibrarySwift.xcdatamodeld in Sources */,
-				7FF588B31BC9B9F000077E36 /* LibraryAPIProtocl.swift in Sources */,
+				7FF588B31BC9B9F000077E36 /* LibraryAPIProtocol.swift in Sources */,
 				7FDE03721BBB778D00514288 /* Dynamic.swift in Sources */,
 				7F975A221BB8EE7F00A6EEBB /* CoreComponents.swift in Sources */,
+				7FF588B71BCB39DF00077E36 /* AlbumsViewModel.swift in Sources */,
 				7F6E3C4B1BB3A400000423FE /* HTTPClient.swift in Sources */,
 				7F6E3C471BB39FFE000423FE /* LibraryAPI.swift in Sources */,
 				7F975A1D1BB8E98200A6EEBB /* ApplicationAssembly.swift in Sources */,

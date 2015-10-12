@@ -27,6 +27,16 @@ class ApplicationAssembly: TyphoonAssembly {
         }
     }
     
+    dynamic func albumsViewModel() -> AnyObject {
+        return TyphoonDefinition.withClass(LibraryAPI.self) { (definition: TyphoonDefinition!) -> Void in
+            
+            definition.useInitializer("initWithLibraryAPI:") {
+                (initializer: TyphoonMethod!) -> Void in
+                initializer.injectParameterWith(self.libraryAPI())
+            }
+        }
+    }
+    
     
     // MARK: - Main Assembly
     

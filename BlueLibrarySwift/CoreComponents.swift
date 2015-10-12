@@ -17,4 +17,6 @@ class CoreComponents: TyphoonAssembly {
     dynamic func persistencyManager() -> AnyObject {
         return TyphoonDefinition.withClass(PersistencyManager.self)
     }
+    
+    
 }

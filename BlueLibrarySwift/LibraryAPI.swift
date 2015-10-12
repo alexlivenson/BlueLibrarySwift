@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import ReactiveCocoa
 
 // Library API will be exposed to other code but will hide HTTPClient and PersistencyManager (Facade Pattern)
 class LibraryAPI: NSObject {
@@ -78,16 +79,13 @@ extension LibraryAPI: LibraryAPIProtocol {
             return
         }
         
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { () -> Void in
-            let downloadedImage = self.httpClient.downloadImage(coverUrl)
-            
-            dispatch_sync(dispatch_get_main_queue()) { () -> Void in
-                imageView.image = downloadedImage
-                
-                if let _downloadedImage = downloadedImage {
-                    self.persistencyManager.saveImage(_downloadedImage, filename: lastPathComponent)
+        httpClient.signalForLoadingImage(coverUrl)
+            .deliverOn(RACScheduler.mainThreadScheduler())
+            .subscribeNext { (image: AnyObject!) -> Void in
+                if let image = image as? UIImage {
+                    imageView.image = image
+                    self.persistencyManager.saveImage(image, filename: lastPathComponent)
                 }
-            }
         }
     }
 }
