@@ -8,7 +8,7 @@
 
 import Foundation
 
-class AlbumsViewModel {
+class AlbumsViewModel: NSObject {
     private var allAlbums = [Album]()
     private var currentAlbumData: (titles: [String], values: [String])?
     private var currentAlbumIndex = 0
@@ -17,20 +17,47 @@ class AlbumsViewModel {
     
     private let libraryAPI: LibraryAPIProtocol!
     
+    var numberOfAlbums: Int {
+        return allAlbums.count
+    }
+    
+    var numberOfAlbumsDeleted: Int {
+        return undoStack.count
+    }
+    
+    var numberOfDataPoints: Int {
+        currentAlbumData = getDataForAlbum(currentAlbumIndex)
+        
+        if let rows = currentAlbumData?.titles.count {
+            return rows
+        }
+        
+        return 0
+    }
+    
+    var currentIndex: Int {
+        return currentAlbumIndex
+    }
+    
     init(libraryAPI: LibraryAPIProtocol) {
         self.libraryAPI = libraryAPI
         
-        currentAlbumIndex = 0
         allAlbums = self.libraryAPI.getAlbums()
     }
     
-    func getDataForAlbum(index: Int) {
+    func reload() {
+        allAlbums = self.libraryAPI.getAlbums()
+    }
+    
+    func getDataForAlbum(index: Int) -> (titles: [String], values: [String])? {
         if index < allAlbums.count && index > -1 {
             let album = allAlbums[index]
             currentAlbumData = album.ae_tableRepresentation()
         } else {
             currentAlbumData = nil
         }
+        
+        return currentAlbumData
     }
     
     func addAlbumAtIndex(album: Album, index: Int) {
@@ -50,16 +77,24 @@ class AlbumsViewModel {
         libraryAPI.deleteAlbum(currentAlbumIndex)
     }
     
-    func numberOfAlbums() -> Int {
-        return allAlbums.count
+    func undoAction() {
+        // 1
+        if undoStack.count > 0 {
+            let (deletedAlbum, index) = undoStack.popLast()!
+            addAlbumAtIndex(deletedAlbum, index: index)
+        }
     }
     
-    func numberOfDataPoints() -> Int {
-        if let rows = currentAlbumData?.titles.count {
-            return rows
-        }
+    func deleteAlbum() {
+        // 1
+        let deleteAlbum = allAlbums[currentAlbumIndex]
         
-        return 0
+        // 2
+        let undoAction = (deleteAlbum, currentAlbumIndex)
+        undoStack.append(undoAction)
+        
+        // 3
+        libraryAPI.deleteAlbum(currentAlbumIndex)
     }
     
 }

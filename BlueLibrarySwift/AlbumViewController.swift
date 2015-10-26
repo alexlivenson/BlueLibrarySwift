@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import ReactiveCocoa
 
 class AlbumViewController: UIViewController {
 
@@ -22,7 +23,7 @@ class AlbumViewController: UIViewController {
     var userDefaults: NSUserDefaults!
     var notificationCenter: NSNotificationCenter!
     var libraryAPI: LibraryAPIProtocol!
-    var albumsViewModel: AlbumViewModel!
+    var albumsViewModel: AlbumsViewModel!
     
     private var allAlbums = [Album]()
     private var currentAlbumData: (titles: [String], values: [String])?
@@ -34,6 +35,31 @@ class AlbumViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        
+        undoButton.rac_command = RACCommand(signalBlock: { (barButton: AnyObject!) -> RACSignal! in
+            self.albumsViewModel.undoAction()
+            
+            if self.albumsViewModel.numberOfAlbumsDeleted == 0 {
+                (barButton as? UIBarButtonItem)?.enabled = false
+            }
+            
+            self.deleteButton.enabled = true
+            
+            return RACSignal.empty()
+        })
+        
+        deleteButton.rac_command = RACCommand(signalBlock: { (barButton: AnyObject!) -> RACSignal! in
+            self.albumsViewModel.deleteAlbum()
+            
+            self.reloadScroller()
+            
+            self.undoButton?.enabled = true
+            if self.albumsViewModel.numberOfAlbums == 0 {
+                self.deleteButton.enabled = false
+            }
+
+            return RACSignal.empty()
+        })
         
         // 1
         self.navigationController?.navigationBar.translucent = false
@@ -90,12 +116,14 @@ class AlbumViewController: UIViewController {
     }
     
     func reloadScroller() {
-        allAlbums = libraryAPI.getAlbums()
-        if currentAlbumIndex < 0 {
-            currentAlbumIndex = 0
-        } else if currentAlbumIndex >= allAlbums.count {
-            currentAlbumIndex = allAlbums.count - 1
-        }
+        self.albumsViewModel.reload()
+        
+//        allAlbums = libraryAPI.getAlbums()
+//        if currentAlbumIndex < 0 {
+//            currentAlbumIndex = 0
+//        } else if currentAlbumIndex >= allAlbums.count {
+//            currentAlbumIndex = allAlbums.count - 1
+//        }
         
         scroller.reload()
         showDataForAlbum(currentAlbumIndex)
@@ -112,49 +140,49 @@ class AlbumViewController: UIViewController {
     }
     
     func addAlbumAtIndex(album: Album, index: Int) {
-        libraryAPI.addAlbum(album, index: index)
-        currentAlbumIndex = index
+//        libraryAPI.addAlbum(album, index: index)
+//        currentAlbumIndex = index
+        albumsViewModel.addAlbumAtIndex(album, index: index)
         reloadScroller()
     }
     
-    @IBAction func undoAction(sender: UIBarButtonItem) {
-        // 1
-        if undoStack.count > 0 {
-            let (deletedAlbum, index) = undoStack.popLast()!
-            addAlbumAtIndex(deletedAlbum, index: index)
-        }
-        
-        // 2
-        if undoStack.count == 0 {
-            undoButton.enabled = false
-        }
-        
-        // 3
-        deleteButton.enabled = true
-    }
-    
-    
-    @IBAction func deleteAlbum(sender: UIBarButtonItem) {
-        // 1
-        let deleteAlbum = allAlbums[currentAlbumIndex]
-        
-        // 2
-        let undoAction = (deleteAlbum, currentAlbumIndex)
-        undoStack.append(undoAction)
-        
-        // 3
-        libraryAPI.deleteAlbum(currentAlbumIndex)
-        reloadScroller()
-        
-        // 4
-        undoButton?.enabled = true
-        
-        // 5
-        if allAlbums.count == 0 {
-            deleteButton.enabled = false
-        }
-
-    }
+//    private func undoAction() {
+//        // 1
+//        if undoStack.count > 0 {
+//            let (deletedAlbum, index) = undoStack.popLast()!
+//            addAlbumAtIndex(deletedAlbum, index: index)
+//        }
+//        
+//        // 2
+//        if undoStack.count == 0 {
+//            undoButton.enabled = false
+//        }
+//        
+//        // 3
+//        deleteButton.enabled = true
+//    }
+//    
+//    private func deleteAlbum() {
+//        // 1
+//        let deleteAlbum = allAlbums[currentAlbumIndex]
+//        
+//        // 2
+//        let undoAction = (deleteAlbum, currentAlbumIndex)
+//        undoStack.append(undoAction)
+//        
+//        // 3
+//        libraryAPI.deleteAlbum(currentAlbumIndex)
+//        reloadScroller()
+//        
+//        // 4
+//        undoButton?.enabled = true
+//        
+//        // 5
+//        if allAlbums.count == 0 {
+//            deleteButton.enabled = false
+//        }
+//
+//    }
     
     deinit {
         notificationCenter.removeObserver(self)
@@ -163,11 +191,7 @@ class AlbumViewController: UIViewController {
 
 extension AlbumViewController: UITableViewDataSource {
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let rows = currentAlbumData?.titles.count {
-            return rows
-        }
-        
-        return 0
+        return albumsViewModel.numberOfDataPoints
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -204,7 +228,7 @@ extension AlbumViewController: HorizontalScrollerDelegate {
     }
     
     func numberOfViewsForHorizontalScroller(scroller: HorizontalScroller) -> Int {
-        return allAlbums.count
+        return albumsViewModel.numberOfAlbums
     }
     
     func horizontalScrollerViewAtIndex(scroller: HorizontalScroller, index: Int) -> UIView {
@@ -222,7 +246,7 @@ extension AlbumViewController: HorizontalScrollerDelegate {
     }
     
     func initialViewIndex(scroller: HorizontalScroller) -> Int {
-        return currentAlbumIndex
+        return albumsViewModel.currentIndex
     }
 }
 
