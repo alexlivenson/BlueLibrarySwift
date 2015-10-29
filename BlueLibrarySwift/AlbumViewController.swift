@@ -63,10 +63,6 @@ class AlbumViewController: UIViewController {
         
         // 1
         self.navigationController?.navigationBar.translucent = false
-        currentAlbumIndex = 0
-        
-        // 2
-        allAlbums = libraryAPI.getAlbums()
         
         // 3
         dataTable.delegate = self
@@ -105,25 +101,12 @@ class AlbumViewController: UIViewController {
     }
 
     func showDataForAlbum(albumIndex: Int) {
-        if albumIndex < allAlbums.count && albumIndex > -1 {
-            let album = allAlbums[albumIndex]
-            currentAlbumData = album.ae_tableRepresentation()
-        } else {
-            currentAlbumData = nil
-        }
-        
+        currentAlbumData = albumsViewModel.getDataForAlbum(albumIndex)
         dataTable.reloadData()
     }
     
     func reloadScroller() {
         self.albumsViewModel.reload()
-        
-//        allAlbums = libraryAPI.getAlbums()
-//        if currentAlbumIndex < 0 {
-//            currentAlbumIndex = 0
-//        } else if currentAlbumIndex >= allAlbums.count {
-//            currentAlbumIndex = allAlbums.count - 1
-//        }
         
         scroller.reload()
         showDataForAlbum(currentAlbumIndex)
@@ -140,49 +123,9 @@ class AlbumViewController: UIViewController {
     }
     
     func addAlbumAtIndex(album: Album, index: Int) {
-//        libraryAPI.addAlbum(album, index: index)
-//        currentAlbumIndex = index
         albumsViewModel.addAlbumAtIndex(album, index: index)
         reloadScroller()
     }
-    
-//    private func undoAction() {
-//        // 1
-//        if undoStack.count > 0 {
-//            let (deletedAlbum, index) = undoStack.popLast()!
-//            addAlbumAtIndex(deletedAlbum, index: index)
-//        }
-//        
-//        // 2
-//        if undoStack.count == 0 {
-//            undoButton.enabled = false
-//        }
-//        
-//        // 3
-//        deleteButton.enabled = true
-//    }
-//    
-//    private func deleteAlbum() {
-//        // 1
-//        let deleteAlbum = allAlbums[currentAlbumIndex]
-//        
-//        // 2
-//        let undoAction = (deleteAlbum, currentAlbumIndex)
-//        undoStack.append(undoAction)
-//        
-//        // 3
-//        libraryAPI.deleteAlbum(currentAlbumIndex)
-//        reloadScroller()
-//        
-//        // 4
-//        undoButton?.enabled = true
-//        
-//        // 5
-//        if allAlbums.count == 0 {
-//            deleteButton.enabled = false
-//        }
-//
-//    }
     
     deinit {
         notificationCenter.removeObserver(self)
@@ -232,7 +175,7 @@ extension AlbumViewController: HorizontalScrollerDelegate {
     }
     
     func horizontalScrollerViewAtIndex(scroller: HorizontalScroller, index: Int) -> UIView {
-        let album = allAlbums[index]
+        let album = albumsViewModel.album(index)
         let frame = CGRect(x: 0, y: 0, width: 100, height: 100)
         let albumView = AlbumView(frame: frame, albumCover: album.coverUrl, notificationCenter: notificationCenter)
         

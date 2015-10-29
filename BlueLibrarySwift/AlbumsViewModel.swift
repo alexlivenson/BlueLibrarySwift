@@ -59,6 +59,10 @@ class AlbumsViewModel: NSObject {
         
         return currentAlbumData
     }
+
+    func album(index: Int) -> Album {
+        return allAlbums[index]
+    }
     
     func addAlbumAtIndex(album: Album, index: Int) {
         libraryAPI.addAlbum(album, index: index)
