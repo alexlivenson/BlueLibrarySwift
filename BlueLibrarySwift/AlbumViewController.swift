@@ -20,17 +20,8 @@ class AlbumViewController: UIViewController {
     @IBOutlet weak var deleteButton: UIBarButtonItem!
     
     // To be injection by DI Frameworkx
-    var userDefaults: NSUserDefaults!
     var notificationCenter: NSNotificationCenter!
-    var libraryAPI: LibraryAPIProtocol!
     var albumsViewModel: AlbumsViewModel!
-    
-    private var allAlbums = [Album]()
-    private var currentAlbumData: (titles: [String], values: [String])?
-    private var currentAlbumIndex = 0
-    
-    // We will use this array as a stick to push / pop operation for the undo option
-    private var undoStack: [(Album, Int)] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,9 +29,10 @@ class AlbumViewController: UIViewController {
         
         undoButton.rac_command = RACCommand(signalBlock: { (barButton: AnyObject!) -> RACSignal! in
             self.albumsViewModel.undoAction()
+            self.reloadScroller()
             
             if self.albumsViewModel.numberOfAlbumsDeleted == 0 {
-                (barButton as? UIBarButtonItem)?.enabled = false
+                self.undoButton.enabled = false
             }
             
             self.deleteButton.enabled = true
@@ -50,10 +42,9 @@ class AlbumViewController: UIViewController {
         
         deleteButton.rac_command = RACCommand(signalBlock: { (barButton: AnyObject!) -> RACSignal! in
             self.albumsViewModel.deleteAlbum()
-            
             self.reloadScroller()
-            
             self.undoButton?.enabled = true
+            
             if self.albumsViewModel.numberOfAlbums == 0 {
                 self.deleteButton.enabled = false
             }
@@ -68,14 +59,10 @@ class AlbumViewController: UIViewController {
         dataTable.delegate = self
         dataTable.dataSource = self
         dataTable.backgroundView = nil
-        view.addSubview(dataTable)
-        
-        loadPreviousState()
+        view.addSubview(dataTable)        
         
         scroller.delegate = self
         reloadScroller()
-        
-        showDataForAlbum(currentAlbumIndex)
         styleToolbarButtons()
         
         notificationCenter.addObserver(self,
@@ -91,35 +78,24 @@ class AlbumViewController: UIViewController {
     }
     
     private func styleToolbarButtons() {
-        if allAlbums.count == 0 {
+        if albumsViewModel.numberOfAlbums == 0 {
             deleteButton.enabled = false
         }
         
-        if undoStack.count == 0 {
+        if albumsViewModel.numberOfAlbumsDeleted == 0 {
             undoButton.enabled = false
         }
-    }
-
-    func showDataForAlbum(albumIndex: Int) {
-        currentAlbumData = albumsViewModel.getDataForAlbum(albumIndex)
-        dataTable.reloadData()
     }
     
     func reloadScroller() {
         self.albumsViewModel.reload()
-        
         scroller.reload()
-        showDataForAlbum(currentAlbumIndex)
+        dataTable.reloadData()
     }
     
     // MARK: Memento Pattern
     func saveCurrentState() {
-        userDefaults.setInteger(currentAlbumIndex, forKey: "currentAlbumIndex")
-    }
-    
-    func loadPreviousState() {
-        currentAlbumIndex = userDefaults.integerForKey("currentAlbumIndex")
-        showDataForAlbum(currentAlbumIndex)
+        albumsViewModel.saveCurrentState()
     }
     
     func addAlbumAtIndex(album: Album, index: Int) {
@@ -144,7 +120,7 @@ extension AlbumViewController: UITableViewDataSource {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
         
-        if let albumData = currentAlbumData {
+        if let albumData = albumsViewModel.albumDataForCurrentIndex {
             cell.textLabel?.text = albumData.titles[indexPath.row]
             cell.detailTextLabel?.text = albumData.values[indexPath.row]
         }
@@ -159,15 +135,15 @@ extension AlbumViewController: UITableViewDelegate {
 
 extension AlbumViewController: HorizontalScrollerDelegate {
     func horizontalScrollerClickedViewAtIndex(scroller: HorizontalScroller, index: Int) {
-        let previousAlbumView = scroller.viewAtIndex(currentAlbumIndex) as! AlbumView
-        previousAlbumView.highlightAlbum(false)
         
-        currentAlbumIndex = index
-        
+        let previousAlbumView = scroller.viewAtIndex(albumsViewModel.currentIndex) as! AlbumView
         let albumView = scroller.viewAtIndex(index) as! AlbumView
-        albumView.highlightAlbum(true)
         
-        showDataForAlbum(index)
+        previousAlbumView.highlightAlbum(false)
+        albumView.highlightAlbum(true)
+        albumsViewModel.currentIndex = index
+        
+        dataTable.reloadData()
     }
     
     func numberOfViewsForHorizontalScroller(scroller: HorizontalScroller) -> Int {
@@ -179,7 +155,7 @@ extension AlbumViewController: HorizontalScrollerDelegate {
         let frame = CGRect(x: 0, y: 0, width: 100, height: 100)
         let albumView = AlbumView(frame: frame, albumCover: album.coverUrl, notificationCenter: notificationCenter)
         
-        if currentAlbumIndex == index {
+        if albumsViewModel.currentIndex == index {
             albumView.highlightAlbum(true)
         } else {
             albumView.highlightAlbum(false)

@@ -30,9 +30,10 @@ class ApplicationAssembly: TyphoonAssembly {
     dynamic func albumsViewModel() -> AnyObject {
         return TyphoonDefinition.withClass(AlbumsViewModel.self) { (definition: TyphoonDefinition!) -> Void in
             
-            definition.useInitializer("initWithLibraryAPI:") {
+            definition.useInitializer("initWithLibraryAPI:userDefaults:") {
                 (initializer: TyphoonMethod!) -> Void in
                 initializer.injectParameterWith(self.libraryAPI())
+                initializer.injectParameterWith(NSUserDefaults.standardUserDefaults())
             }
         }
     }
@@ -42,8 +43,6 @@ class ApplicationAssembly: TyphoonAssembly {
     
     dynamic func albumViewController() -> AnyObject {
         return TyphoonDefinition.withClass(AlbumViewController.self) { (definition: TyphoonDefinition!) -> Void in
-            definition.injectProperty("libraryAPI", with: self.libraryAPI())
-            definition.injectProperty("userDefaults", with: NSUserDefaults.standardUserDefaults())
             definition.injectProperty("notificationCenter", with: NSNotificationCenter.defaultCenter())
             definition.injectProperty("albumsViewModel", with: self.albumsViewModel())
         }

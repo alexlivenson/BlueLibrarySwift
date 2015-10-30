@@ -9,6 +9,7 @@
 import Foundation
 
 class AlbumsViewModel: NSObject {
+    private var userDefaults: NSUserDefaults!
     private var allAlbums = [Album]()
     private var currentAlbumData: (titles: [String], values: [String])?
     private var currentAlbumIndex = 0
@@ -36,13 +37,24 @@ class AlbumsViewModel: NSObject {
     }
     
     var currentIndex: Int {
-        return currentAlbumIndex
+        get {
+            return currentAlbumIndex
+        }
+        set {
+            currentAlbumIndex == newValue
+        }
     }
     
-    init(libraryAPI: LibraryAPIProtocol) {
+    var albumDataForCurrentIndex: (titles: [String], values: [String])? {
+        return getDataForAlbum(currentAlbumIndex)
+    }
+    
+    init(libraryAPI: LibraryAPIProtocol, userDefaults: NSUserDefaults) {
         self.libraryAPI = libraryAPI
+        self.userDefaults = userDefaults
         
         allAlbums = self.libraryAPI.getAlbums()
+        currentAlbumIndex = userDefaults.integerForKey("currentAlbumIndex")
     }
     
     func reload() {
@@ -99,6 +111,10 @@ class AlbumsViewModel: NSObject {
         
         // 3
         libraryAPI.deleteAlbum(currentAlbumIndex)
+    }
+    
+    func saveCurrentState() {
+        userDefaults.setInteger(currentAlbumIndex, forKey: "currentAlbumIndex")
     }
     
 }
