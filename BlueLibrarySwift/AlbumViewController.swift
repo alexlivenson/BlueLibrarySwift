@@ -27,31 +27,6 @@ class AlbumViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        undoButton.rac_command = RACCommand(signalBlock: { (barButton: AnyObject!) -> RACSignal! in
-            self.albumsViewModel.undoAction()
-            self.reloadScroller()
-            
-            if self.albumsViewModel.numberOfAlbumsDeleted == 0 {
-                self.undoButton.enabled = false
-            }
-            
-            self.deleteButton.enabled = true
-            
-            return RACSignal.empty()
-        })
-        
-        deleteButton.rac_command = RACCommand(signalBlock: { (barButton: AnyObject!) -> RACSignal! in
-            self.albumsViewModel.deleteAlbum()
-            self.reloadScroller()
-            self.undoButton?.enabled = true
-            
-            if self.albumsViewModel.numberOfAlbums == 0 {
-                self.deleteButton.enabled = false
-            }
-
-            return RACSignal.empty()
-        })
-        
         // 1
         self.navigationController?.navigationBar.translucent = false
         
@@ -103,6 +78,29 @@ class AlbumViewController: UIViewController {
         reloadScroller()
     }
     
+    @IBAction func undo(sender: UIBarButtonItem) {
+        self.albumsViewModel.undoAction()
+        self.reloadScroller()
+        
+        // NOTE: For some reason, fails to disable the button
+        if self.albumsViewModel.numberOfAlbumsDeleted == 0 {
+            sender.enabled = false
+        }
+        
+        self.deleteButton.enabled = true
+        
+    }
+    
+    @IBAction func deleteAlbum(sender: UIBarButtonItem) {
+        self.albumsViewModel.deleteAlbum()
+        self.reloadScroller()
+        self.undoButton?.enabled = true
+        
+        if self.albumsViewModel.numberOfAlbums == 0 {
+            sender.enabled = false
+        }
+    }
+    
     deinit {
         notificationCenter.removeObserver(self)
     }
@@ -141,7 +139,6 @@ extension AlbumViewController: HorizontalScrollerDelegate {
         
         previousAlbumView.highlightAlbum(false)
         albumView.highlightAlbum(true)
-        albumsViewModel.currentIndex = index
         
         dataTable.reloadData()
     }
