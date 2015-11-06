@@ -41,7 +41,7 @@ class AlbumsViewModel: NSObject {
             return currentAlbumIndex
         }
         set {
-            currentAlbumIndex == newValue
+            currentAlbumIndex = newValue
         }
     }
     

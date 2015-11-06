@@ -136,6 +136,7 @@ extension AlbumViewController: HorizontalScrollerDelegate {
         
         let previousAlbumView = scroller.viewAtIndex(albumsViewModel.currentIndex) as! AlbumView
         let albumView = scroller.viewAtIndex(index) as! AlbumView
+        albumsViewModel.currentIndex = index
         
         previousAlbumView.highlightAlbum(false)
         albumView.highlightAlbum(true)
