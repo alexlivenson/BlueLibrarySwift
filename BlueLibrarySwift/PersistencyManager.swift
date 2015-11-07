@@ -63,6 +63,9 @@ class PersistencyManager: NSObject {
         saveAlbums()
     }
     
+}
+
+extension PersistencyManager: PersistencyManagerProtocol {
     func getAlbums() -> [Album] {
         return albums
     }
@@ -81,14 +84,8 @@ class PersistencyManager: NSObject {
         data.writeToFile(filename, atomically: true)
     }
     
-    func deleteAlbumAtIndex(index: Int) {
+    func deleteAlbum(index: Int) {
         albums.removeAtIndex(index)
-    }
-    
-    func saveImage(image: UIImage, filename: String) {
-        let path = albumDir + filename
-        let data = UIImagePNGRepresentation(image)
-        data?.writeToFile(path, atomically: true)
     }
     
     func getImage(filename: String) -> UIImage? {
@@ -101,5 +98,11 @@ class PersistencyManager: NSObject {
             print(error)
             return nil
         }
+    }
+    
+    func saveImage(image: UIImage, filename: String) {
+        let path = albumDir + filename
+        let data = UIImagePNGRepresentation(image)
+        data?.writeToFile(path, atomically: true)
     }
 }

@@ -8,10 +8,6 @@
 
 import Foundation
 
-@objc protocol LibraryAPIProtocol {
-    func getAlbums() -> [Album]
-    func addAlbum(album: Album, index: Int)
-    func saveAlbums()
-    func deleteAlbum(index: Int)
+@objc protocol LibraryAPIProtocol: AlbumResourceProtocol {
     func downloadImage(notification: NSNotification)
 }

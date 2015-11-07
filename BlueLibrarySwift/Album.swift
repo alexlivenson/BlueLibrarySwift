@@ -8,7 +8,6 @@
 
 import UIKit
 
-// NOTE: Can also make this a struct?
 class Album: NSObject, NSCoding {
     
     private let title: String

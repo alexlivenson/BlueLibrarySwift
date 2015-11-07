@@ -13,7 +13,7 @@ class AlbumsViewModel: NSObject {
     private var allAlbums = [Album]()
     private var currentAlbumData: (titles: [String], values: [String])?
     private var currentAlbumIndex = 0
-    // We will use this array as a stick to push / pop operation for the undo option
+    // We will use this array as a push / pop operation for the undo option
     private var undoStack: [(Album, Int)] = []
     
     private let libraryAPI: LibraryAPIProtocol!
@@ -82,37 +82,20 @@ class AlbumsViewModel: NSObject {
     }
     
     func deleteAlbumAtCurrentIndex() {
-        // 1
         let deleteAlbum = allAlbums[currentAlbumIndex]
-        
-        // 2
         let undoAction = (deleteAlbum, currentAlbumIndex)
-        undoStack.append(undoAction)
         
-        // 3
+        undoStack.append(undoAction)
         libraryAPI.deleteAlbum(currentAlbumIndex)
     }
     
     func undoAction() {
-        // 1
         if undoStack.count > 0 {
             let (deletedAlbum, index) = undoStack.popLast()!
             addAlbumAtIndex(deletedAlbum, index: index)
         }
     }
-    
-    func deleteAlbum() {
-        // 1
-        let deleteAlbum = allAlbums[currentAlbumIndex]
-        
-        // 2
-        let undoAction = (deleteAlbum, currentAlbumIndex)
-        undoStack.append(undoAction)
-        
-        // 3
-        libraryAPI.deleteAlbum(currentAlbumIndex)
-    }
-    
+            
     func saveCurrentState() {
         userDefaults.setInteger(currentAlbumIndex, forKey: "currentAlbumIndex")
     }

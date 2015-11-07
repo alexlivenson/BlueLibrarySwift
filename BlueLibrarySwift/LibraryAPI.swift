@@ -11,12 +11,12 @@ import ReactiveCocoa
 
 // Library API will be exposed to other code but will hide HTTPClient and PersistencyManager (Facade Pattern)
 class LibraryAPI: NSObject {
-    private let persistencyManager: PersistencyManager
+    private let persistencyManager: PersistencyManagerProtocol
     private let httpClient: HTTPClient
     private let notificationCenter: NSNotificationCenter
     private var isOnline: Bool
     
-    init(persistencyManager: PersistencyManager, httpClient: HTTPClient, notificationCenter: NSNotificationCenter) {
+    init(persistencyManager: PersistencyManagerProtocol, httpClient: HTTPClient, notificationCenter: NSNotificationCenter) {
         self.persistencyManager = persistencyManager
         self.httpClient = httpClient
         self.notificationCenter = notificationCenter
@@ -58,7 +58,7 @@ extension LibraryAPI: LibraryAPIProtocol {
     }
     
     func deleteAlbum(index: Int) {
-        persistencyManager.deleteAlbumAtIndex(index)
+        persistencyManager.deleteAlbum(index)
         
         if isOnline {
             httpClient.postRequest("/api/deleteAlbum", body: "\(index)")

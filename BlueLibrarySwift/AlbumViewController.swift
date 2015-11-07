@@ -15,7 +15,6 @@ class AlbumViewController: UIViewController {
     @IBOutlet weak var toolbar: UIToolbar!
     @IBOutlet weak var scroller: HorizontalScroller!
     
-    // NOTE: Reactive Cocoa does not yet have good support for UIBarButtonItems
     @IBOutlet weak var undoButton: UIBarButtonItem!
     @IBOutlet weak var deleteButton: UIBarButtonItem!
     
@@ -30,7 +29,7 @@ class AlbumViewController: UIViewController {
         // 1
         self.navigationController?.navigationBar.translucent = false
         
-        // 3
+        // 2
         dataTable.delegate = self
         dataTable.dataSource = self
         dataTable.backgroundView = nil
@@ -92,7 +91,7 @@ class AlbumViewController: UIViewController {
     }
     
     @IBAction func deleteAlbum(sender: UIBarButtonItem) {
-        self.albumsViewModel.deleteAlbum()
+        self.albumsViewModel.deleteAlbumAtCurrentIndex()
         self.reloadScroller()
         self.undoButton?.enabled = true
         
