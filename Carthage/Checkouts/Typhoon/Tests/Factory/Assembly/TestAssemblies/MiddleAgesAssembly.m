@@ -254,7 +254,7 @@
     }];
 }
 
-- (Mock *)mockWithRuntimeBlock:(NSString *(^)())block andRuntimeClass:(Class)aClass
+- (Mock *)mockWithRuntimeBlock:(NSString *(^)(void))block andRuntimeClass:(Class)aClass
 {
     return [TyphoonDefinition withClass:[Mock class] configuration:^(TyphoonDefinition *definition) {
         [definition useInitializer:@selector(initWithObject:clazz:block:) parameters:^(TyphoonMethod *initializer) {
@@ -311,7 +311,7 @@
     return [self stringWithValue:@"Hello world!"];
 }
 
-- (Mock *)mockWithRuntimeBlock:(NSString *(^)())block
+- (Mock *)mockWithRuntimeBlock:(NSString *(^)(void))block
 {
     return [self mockWithRuntimeBlock:block andRuntimeClass:[NSString class]];
 }
@@ -368,7 +368,7 @@
     return [TyphoonDefinition with:@"123"];
 }
 
-- (NSString *(^)())blockDefinition
+- (NSString *(^)(void))blockDefinition
 {
     return [TyphoonDefinition with:^NSString *(){
         return @"321";
@@ -390,5 +390,30 @@
     return [TyphoonDefinition with:argument];
 }
 
+- (id)occasionallyNilKnightWithBeforeInjections
+{
+    return [TyphoonDefinition withClass:[Knight class] configuration:^(TyphoonDefinition *definition) {
+        [definition useInitializer:@selector(initNilInstance)];
+        [definition performBeforeInjections:@selector(favoriteQuest)];
+    }];
+}
+
+- (id)occasionallyNilKnightWithAfterInjections
+{
+    return [TyphoonDefinition withClass:[Knight class] configuration:^(TyphoonDefinition *definition) {
+        [definition useInitializer:@selector(initNilInstance)];
+        [definition performAfterInjections:@selector(favoriteQuest)];
+    }];
+}
+
+- (id)occasionallyNilKnightWithMethodInjections
+{
+    return [TyphoonDefinition withClass:[Knight class] configuration:^(TyphoonDefinition *definition) {
+        [definition useInitializer:@selector(initNilInstance)];
+        [definition injectMethod:@selector(setDamselsRescued:) parameters:^(TyphoonMethod *method) {
+            [method injectParameterWith:@42];
+        }];
+    }];
+}
 
 @end

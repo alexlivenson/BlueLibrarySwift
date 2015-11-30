@@ -62,7 +62,7 @@
 
 - (id)knightWithFakePropertyQuestByType;
 
-- (Mock *)mockWithRuntimeBlock:(NSString *(^)())block andRuntimeClass:(Class)aClass;
+- (Mock *)mockWithRuntimeBlock:(NSString *(^)(void))block andRuntimeClass:(Class)aClass;
 
 - (id)knightRuntimeArgumentsFromDefinition;
 
@@ -70,7 +70,7 @@
 
 - (NSString *)stringValueShortcut;
 
-- (Mock *)mockWithRuntimeBlock:(NSString *(^)())block;
+- (Mock *)mockWithRuntimeBlock:(NSString *(^)(void))block;
 
 - (Mock *)mockWithRuntimeClass:(Class)clazz;
 
@@ -90,12 +90,18 @@
 
 - (NSString *)simpleString;
 
-- (NSString *(^)())blockDefinition;
+- (NSString *(^)(void))blockDefinition;
 
 - (NSString *)referenceToSimpleString;
 
 - (NSArray *)simpleArray;
 
 - (id)simpleRuntimeArgument:(id)argument;
+
+- (id)occasionallyNilKnightWithBeforeInjections;
+
+- (id)occasionallyNilKnightWithAfterInjections;
+
+- (id)occasionallyNilKnightWithMethodInjections;
 
 @end

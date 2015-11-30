@@ -25,6 +25,7 @@
 #import "TyphoonWeakComponentsPool.h"
 #import "TyphoonFactoryAutoInjectionPostProcessor.h"
 #import "TyphoonStackElement.h"
+#import "TyphoonTypeConverterRegistry.h"
 
 @interface TyphoonDefinition (TyphoonComponentFactory)
 
@@ -75,11 +76,12 @@ static TyphoonComponentFactory *uiResolvingFactory = nil;
         _weakSingletons = [TyphoonWeakComponentsPool new];
         _objectGraphSharedInstances = (id<TyphoonComponentsPool>)[[NSMutableDictionary alloc] init];
         _stack = [TyphoonCallStack stack];
+        _typeConverterRegistry = [[TyphoonTypeConverterRegistry alloc] init];
         _definitionPostProcessors = [[NSMutableArray alloc] init];
         _instancePostProcessors = [[NSMutableArray alloc] init];
-        [self attachPostProcessor:[TyphoonParentReferenceHydratingPostProcessor new]];
+        [self attachDefinitionPostProcessor:[TyphoonParentReferenceHydratingPostProcessor new]];
         [self attachAutoInjectionPostProcessorIfNeeded];
-        [self attachPostProcessor:[TyphoonFactoryPropertyInjectionPostProcessor new]];
+        [self attachDefinitionPostProcessor:[TyphoonFactoryPropertyInjectionPostProcessor new]];
     }
     return self;
 }
@@ -90,7 +92,7 @@ static TyphoonComponentFactory *uiResolvingFactory = nil;
 
     NSNumber *value = bundleInfoDictionary[@"TyphoonAutoInjectionEnabled"];
     if (!value || [value boolValue]) {
-        [self attachPostProcessor:[TyphoonFactoryAutoInjectionPostProcessor new]];
+        [self attachDefinitionPostProcessor:[TyphoonFactoryAutoInjectionPostProcessor new]];
     }
 }
 
@@ -210,6 +212,10 @@ static TyphoonComponentFactory *uiResolvingFactory = nil;
     }
 }
 
+- (TyphoonTypeConverterRegistry *)typeConverterRegistry {
+    return _typeConverterRegistry;
+}
+
 - (NSArray *)registry
 {
     [self loadIfNeeded];
@@ -236,10 +242,8 @@ static TyphoonComponentFactory *uiResolvingFactory = nil;
     }
 }
 
-
-- (void)attachPostProcessor:(id<TyphoonDefinitionPostProcessor>)postProcessor
-{
-    LogTrace(@"Attaching post processor: %@", postProcessor);
+- (void)attachDefinitionPostProcessor:(id<TyphoonDefinitionPostProcessor>)postProcessor {
+    LogTrace(@"Attaching definition post processor: %@", postProcessor);
     [_definitionPostProcessors addObject:postProcessor];
     if ([self isLoaded]) {
         LogDebug(@"Definitions registered, refreshing all singletons.");
@@ -247,6 +251,23 @@ static TyphoonComponentFactory *uiResolvingFactory = nil;
     }
 }
 
+- (void)attachInstancePostProcessor:(id<TyphoonInstancePostProcessor>)postProcessor {
+    LogTrace(@"Attaching instance post processor: %@", postProcessor);
+    [_instancePostProcessors addObject:postProcessor];
+}
+
+- (void)attachTypeConverter:(id<TyphoonTypeConverter>)typeConverter {
+    LogTrace(@"Attaching type conveter: %@", typeConverter);
+    [_typeConverterRegistry registerTypeConverter:typeConverter];
+}
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-implementations"
+- (void)attachPostProcessor:(id<TyphoonDefinitionPostProcessor>)postProcessor
+{
+    [self attachDefinitionPostProcessor:postProcessor];
+}
+#pragma clang diagnostic pop
 
 - (void)inject:(id)instance
 {
@@ -452,10 +473,12 @@ static TyphoonComponentFactory *uiResolvingFactory = nil;
     [_registry addObject:definition];
 }
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-implementations"
 - (void)addInstancePostProcessor:(id<TyphoonInstancePostProcessor>)postProcessor
 {
-    [_instancePostProcessors addObject:postProcessor];
+    [self attachInstancePostProcessor:postProcessor];
 }
-
+#pragma clang diagnostic pop
 
 @end

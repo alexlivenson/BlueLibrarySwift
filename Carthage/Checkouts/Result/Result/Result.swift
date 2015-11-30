@@ -58,18 +58,6 @@ public enum Result<T, Error: ErrorType>: ResultType, CustomStringConvertible, Cu
 
 
 	// MARK: Higher-order functions
-
-	/// Returns a new Result by mapping `Success`es’ values using `transform`, or re-wrapping `Failure`s’ errors.
-	public func map<U>(@noescape transform: T -> U) -> Result<U, Error> {
-		return flatMap { .Success(transform($0)) }
-	}
-
-	/// Returns the result of applying `transform` to `Success`es’ values, or re-wrapping `Failure`’s errors.
-	public func flatMap<U>(@noescape transform: T -> Result<U, Error>) -> Result<U, Error> {
-		return analysis(
-			ifSuccess: transform,
-			ifFailure: Result<U, Error>.Failure)
-	}
 	
 	/// Returns `self.value` if this result is a .Success, or the given value otherwise. Equivalent with `??`
 	public func recover(@autoclosure value: () -> T) -> T {
@@ -158,7 +146,7 @@ public func ?? <T, Error> (left: Result<T, Error>, @autoclosure right: () -> Res
 
 // MARK: - Derive result from failable closure
 
-public func materialize<T>(f: () throws -> T) -> Result<T, NSError> {
+public func materialize<T>(@autoclosure f: () throws -> T) -> Result<T, NSError> {
 	do {
 		return .Success(try f())
 	} catch {
@@ -201,24 +189,11 @@ infix operator >>- {
 	precedence 100
 }
 
-infix operator &&& {
-	/// Same associativity as &&.
-	associativity left
-
-	/// Same precedence as &&.
-	precedence 120
-}
-
 /// Returns the result of applying `transform` to `Success`es’ values, or re-wrapping `Failure`’s errors.
 ///
 /// This is a synonym for `flatMap`.
 public func >>- <T, U, Error> (result: Result<T, Error>, @noescape transform: T -> Result<U, Error>) -> Result<U, Error> {
 	return result.flatMap(transform)
-}
-
-/// Returns a Result with a tuple of `left` and `right` values if both are `Success`es, or re-wrapping the error of the earlier `Failure`.
-public func &&& <T, U, Error> (left: Result<T, Error>, @autoclosure right: () -> Result<U, Error>) -> Result<(T, U), Error> {
-	return left.flatMap { left in right().map { right in (left, right) } }
 }
 
 

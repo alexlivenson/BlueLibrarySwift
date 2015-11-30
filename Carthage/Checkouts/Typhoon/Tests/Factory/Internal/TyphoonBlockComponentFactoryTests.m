@@ -56,7 +56,7 @@
     internalProcessorsCount = [[_componentFactory definitionPostProcessors] count];
 
     TyphoonConfigPostProcessor *processor = [TyphoonConfigPostProcessor forResourceNamed:@"SomeProperties.properties"];
-    [_componentFactory attachPostProcessor:processor];
+    [_componentFactory attachDefinitionPostProcessor:processor];
 
     _exceptionTestFactory = [[TyphoonBlockComponentFactory alloc] initWithAssembly:[ExceptionTestAssembly assembly]];
     _circularDependenciesFactory = [[TyphoonBlockComponentFactory alloc]
@@ -72,8 +72,8 @@
     // Unregister NSNull converter picked up in infrastructure components assembly.
     // Try/catch to make the correct test fail if converterFor: throws an exception because of missing converter.
     @try {
-        id<TyphoonTypeConverter> converter = [[TyphoonTypeConverterRegistry shared] converterForType:@"NSNull"];
-        [[TyphoonTypeConverterRegistry shared] unregisterTypeConverter:converter];
+        id<TyphoonTypeConverter> converter = [_infrastructureComponentsFactory.typeConverterRegistry converterForType:@"NSNull"];
+        [_infrastructureComponentsFactory.typeConverterRegistry unregisterTypeConverter:converter];
     }
     @catch (NSException *exception) {}
 }
@@ -217,7 +217,7 @@
     TyphoonComponentFactory *factory = [[TyphoonBlockComponentFactory alloc]
         initWithAssembly:[TyphoonConfigAssembly assembly]];
     TyphoonConfigPostProcessor *processor = [TyphoonConfigPostProcessor forResourceNamed:@"SomeProperties.properties"];
-    [factory attachPostProcessor:processor];
+    [factory attachDefinitionPostProcessor:processor];
 
     Knight *knight = [factory componentForKey:@"knight"];
     XCTAssertEqual(knight.damselsRescued, (NSUInteger)12);
@@ -245,8 +245,17 @@
 
 - (void)test_type_converter_recognized
 {
-    id<TyphoonTypeConverter> nullConverter = [[TyphoonTypeConverterRegistry shared] converterForType:@"NSNull"];
+    id<TyphoonTypeConverter> nullConverter = [_infrastructureComponentsFactory.typeConverterRegistry converterForType:@"NSNull"];
     XCTAssertNotNil(nullConverter);
+}
+
+- (void)test_factories_have_different_converter_registries
+{
+    id existingConverter = [_infrastructureComponentsFactory.typeConverterRegistry converterForType:@"NSNull"];
+    id nonExistingConverter = [_componentFactory.typeConverterRegistry converterForType:@"NSNull"];
+    
+    XCTAssertNotNil(existingConverter);
+    XCTAssertNil(nonExistingConverter);
 }
 
 //-------------------------------------------------------------------------------------------
